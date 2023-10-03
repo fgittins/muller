@@ -2,7 +2,7 @@ __author__  = 'Fabian Gittins'
 __date__    = '03/10/2023'
 
 import unittest
-import numpy as np
+from math import pi, sin, exp
 from muller import muller
 
 class Test(unittest.TestCase):
@@ -21,26 +21,26 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(root, -612**(1/2), delta=1e-5)
 
     def test_sine(self):
-        f = lambda x: np.sin(x)
+        f = lambda x: sin(x)
         x = (1, 2, 3)
 
         root = muller(f, x)
 
-        self.assertAlmostEqual(root, np.pi, delta=1e-5)
+        self.assertAlmostEqual(root, pi, delta=1e-5)
 
         x = (2, 4, 6)
 
         root = muller(f, x)
 
-        self.assertAlmostEqual(root, 2*np.pi, delta=1e-5)
+        self.assertAlmostEqual(root, 2*pi, delta=1e-5)
 
     def test_expsine(self):
-        f = lambda x: np.exp(-x)*np.sin(x)
+        f = lambda x: exp(-x)*sin(x)
         x = (-2, -3, -4)
 
         root = muller(f, x)
 
-        self.assertAlmostEqual(root, -np.pi, delta=1e-5)
+        self.assertAlmostEqual(root, -pi, delta=1e-5)
 
         x = (-1, 0, 1/2)
 
@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
 
         root = muller(f, x)
 
-        self.assertAlmostEqual(root, np.pi, delta=1e-5)
+        self.assertAlmostEqual(root, pi, delta=1e-5)
 
 if __name__ == '__main__':
     unittest.main()
