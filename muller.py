@@ -1,7 +1,7 @@
 __author__  = 'Fabian Gittins'
-__date__    = '30/09/2023'
+__date__    = '03/10/2023'
 
-def muller(f, x, tol=1e-5, maxiter=50):
+def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     """
     Muller's method for root finding of scalar function.
 
@@ -15,50 +15,57 @@ def muller(f, x, tol=1e-5, maxiter=50):
         Absolute tolerance for termination
     maxiter : float, optional
         Maximum number of iterations
+    verbose : bool, optional
+        Prints final number of iterations
 
     Returns
     -------
     root : float
         Root of function
+
+    Notes
+    -----
+    Implementation is based on description of Muller's method in Sec. 9.5.2 of 
+    Press et al. (2007), "Numerical recipes. The Art of Scientific Computing, 
+    3rd Edition" (Cambridge University Press, Cambridge, UK; 
+    http://numerical.recipes/book.html).
     """
     if len(x) != 3:
         raise ValueError('x must have three components')
 
-    x0, x1, x2 = x
-    y0 = f(x0)
-    y1 = f(x1)
-    y2 = f(x2)
+    ximinus2, ximinus1, xi  = x
+    yiminus2                = f(ximinus2)
+    yiminus1                = f(ximinus1)
+    yi                      = f(xi)
 
     converged = False
 
     for i in range(maxiter):
-        divdiff01   = (y1 - y0)/(x1 - x0)
-        divdiff02   = (y2 - y0)/(x2 - x0)
-        divdiff12   = (y2 - y1)/(x2 - x1)
-        divdiff012  = (divdiff12 - divdiff01)/(x2 - x0)
-        w           = divdiff01 + divdiff02 - divdiff12
+        q           = (xi - ximinus1)/(ximinus1 - ximinus2)
+        A           = q*yi - q*(1 + q)*yiminus1 + q**2*yiminus2
+        B           = (2*q + 1)*yi - (1 + q)**2*yiminus1 + q**2*yiminus2
+        C           = (1 + q)*yi
 
-        delta       = (w**2 - 4*y2*divdiff012)**(1/2)
-        denomplus   = w + delta
-        denomminus  = w - delta
+        denomplus   = B + (B**2 - 4*A*C)**(1/2)
+        denomminus  = B - (B**2 - 4*A*C)**(1/2)
 
-        if abs(denomplus) > abs(denomminus):
-            x3 = x2 - 2*y2/denomplus
+        if abs(denomplus) >= abs(denomminus):
+            xiplus1 = xi - (xi - ximinus1)*2*C/denomplus
         else:
-            x3 = x2 - 2*y2/denomminus
+            xiplus1 = xi - (xi - ximinus1)*2*C/denomminus
 
-        y3 = f(x3)
+        yiplus1     = f(xiplus1)
 
-        y0, y1, y2 = y1, y2, y3
-        x0, x1, x2 = x1, x2, x3
+        yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
+        ximinus2, ximinus1, xi = ximinus1, xi, xiplus1
 
-        if abs(y3) < tol:
+        if abs(yiplus1) < tol:
             converged = True
             break
 
-    if converged:
+    if converged and verbose:
         print('Method converged after {} iterations'.format(i))
-    else:
+    elif not converged:
         raise ValueError('Method did not converge within {} iterations'
                          .format(maxiter))
-    return x3
+    return xiplus1
