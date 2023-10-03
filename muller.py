@@ -13,7 +13,7 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         Three initial guesses
     tol : float, optional
         Absolute tolerance for termination
-    maxiter : float, optional
+    maxiter : int, optional
         Maximum number of iterations
     verbose : bool, optional
         Prints final number of iterations
@@ -32,11 +32,17 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     """
     if len(x) != 3:
         raise ValueError('x must have three components')
+    if tol <= 0:
+        raise ValueError('tol is too small (tol = {} <= 0)'.format(tol))
+    if type(maxiter) != int:
+        raise ValueError('maxiter must be integer')
+    if maxiter < 1:
+        raise ValueError('maxiter must be greater than 0')
+    if type(verbose) != bool:
+        raise ValueError('verbose must be boolean')
 
-    ximinus2, ximinus1, xi  = x
-    yiminus2                = f(ximinus2)
-    yiminus1                = f(ximinus1)
-    yi                      = f(xi)
+    ximinus2, ximinus1, xi = x
+    yiminus2, yiminus1, yi = f(ximinus2), f(ximinus1), f(xi)
 
     converged = False
 
@@ -54,14 +60,14 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         else:
             xiplus1 = xi - (xi - ximinus1)*2*C/denomminus
 
-        yiplus1     = f(xiplus1)
+        yiplus1 = f(xiplus1)
 
-        yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
-        ximinus2, ximinus1, xi = ximinus1, xi, xiplus1
-
-        if abs(yiplus1) < tol:
+        if abs(yiplus1) <= tol:
             converged = True
             break
+
+        ximinus2, ximinus1, xi = ximinus1, xi, xiplus1
+        yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
 
     if converged and verbose:
         print('Method converged after {} iterations'.format(i))
