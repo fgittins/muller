@@ -1,8 +1,11 @@
 __author__  = 'Fabian Gittins'
-__date__    = '03/10/2023'
+__date__    = '05/10/2023'
 
 def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     """Muller's method for root finding of scalar function.
+
+    Implementation is based on description of Muller's method in Sec. 9.5.2 of 
+    Ref. [1].
 
     Parameters
     ----------
@@ -22,16 +25,11 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     root : float
         Root of function
 
-    Notes
-    -----
-    Implementation is based on description of Muller's method in Sec. 9.5.2 of 
-    Ref. [1]_.
-
     References
     ----------
-    .. [1] Press et al. (2007), "Numerical recipes. The Art of Scientific 
-           Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK; 
-           http://numerical.recipes/book.html).
+    [1] Press et al. (2007), "Numerical recipes. The Art of Scientific 
+        Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK; 
+        http://numerical.recipes/book.html).
     """
     if len(x) != 3:
         raise ValueError('x must have three components')
