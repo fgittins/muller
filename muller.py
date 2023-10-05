@@ -10,15 +10,15 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     Parameters
     ----------
     f : callable
-        Function to find root of
+        Function to find root of.
     x : (3,) array_like
-        Three initial guesses
+        Three initial guesses.
     tol : float, optional
-        Absolute tolerance for termination
+        Absolute tolerance for termination.
     maxiter : int, optional
-        Maximum number of iterations
+        Maximum number of iterations.
     verbose : bool, optional
-        Prints final number of iterations
+        Prints final number of iterations.
 
     Returns
     -------
