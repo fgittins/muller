@@ -1,5 +1,8 @@
+"""Test suite for `muller` root finder."""
+
 import unittest
 from math import pi, sin, exp
+
 from muller import muller
 
 __author__ = 'Fabian Gittins'
