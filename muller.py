@@ -1,10 +1,11 @@
-__author__  = 'Fabian Gittins'
-__date__    = '05/10/2023'
+__author__ = 'Fabian Gittins'
+__date__ = '06/10/2023'
+
 
 def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     """Muller's method for root finding of scalar function.
 
-    Implementation is based on description of Muller's method in Sec. 9.5.2 of 
+    Implementation is based on description of Muller's method in Sec. 9.5.2 of
     Ref. [1].
 
     Parameters
@@ -27,8 +28,8 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
 
     References
     ----------
-    [1] Press et al. (2007), "Numerical recipes. The Art of Scientific 
-        Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK; 
+    [1] Press et al. (2007), "Numerical recipes. The Art of Scientific
+        Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK;
         http://numerical.recipes/book.html).
     """
     if len(x) != 3:
@@ -48,13 +49,13 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     converged = False
 
     for i in range(maxiter):
-        q           = (xi - ximinus1)/(ximinus1 - ximinus2)
-        A           = q*yi - q*(1 + q)*yiminus1 + q**2*yiminus2
-        B           = (2*q + 1)*yi - (1 + q)**2*yiminus1 + q**2*yiminus2
-        C           = (1 + q)*yi
+        q = (xi - ximinus1)/(ximinus1 - ximinus2)
+        A = q*yi - q*(1 + q)*yiminus1 + q**2*yiminus2
+        B = (2*q + 1)*yi - (1 + q)**2*yiminus1 + q**2*yiminus2
+        C = (1 + q)*yi
 
-        denomplus   = B + (B**2 - 4*A*C)**(1/2)
-        denomminus  = B - (B**2 - 4*A*C)**(1/2)
+        denomplus = B + (B**2 - 4*A*C)**(1/2)
+        denomminus = B - (B**2 - 4*A*C)**(1/2)
 
         if abs(denomplus) >= abs(denomminus):
             xiplus1 = xi - (xi - ximinus1)*2*C/denomplus

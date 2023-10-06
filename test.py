@@ -1,27 +1,32 @@
-__author__  = 'Fabian Gittins'
-__date__    = '03/10/2023'
-
 import unittest
 from math import pi, sin, exp
 from muller import muller
 
+__author__ = 'Fabian Gittins'
+__date__ = '06/10/2023'
+
+
 class Test(unittest.TestCase):
     def test_quadratic(self):
-        f = lambda x: x**2 - 612
+        def f(x):
+            return x**2 - 612
+
         x = (10, 20, 30)
 
         root = muller(f, x)
-        
+
         self.assertAlmostEqual(root, 612**(1/2), delta=1e-5)
 
         x = (-10, -20, -30)
 
         root = muller(f, x)
-        
+
         self.assertAlmostEqual(root, -612**(1/2), delta=1e-5)
 
     def test_sine(self):
-        f = lambda x: sin(x)
+        def f(x):
+            return sin(x)
+
         x = (1, 2, 3)
 
         root = muller(f, x)
@@ -35,7 +40,9 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(root, 2*pi, delta=1e-5)
 
     def test_expsine(self):
-        f = lambda x: exp(-x)*sin(x)
+        def f(x):
+            return exp(-x)*sin(x)
+
         x = (-2, -3, -4)
 
         root = muller(f, x)
@@ -54,6 +61,6 @@ class Test(unittest.TestCase):
 
         self.assertAlmostEqual(root, pi, delta=1e-5)
 
+
 if __name__ == '__main__':
     unittest.main()
-    
