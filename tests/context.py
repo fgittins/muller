@@ -1,4 +1,4 @@
-"""Simple script to import main module for testing"""
+"""Simple script to import main module for testing."""
 
 import sys
 import os
