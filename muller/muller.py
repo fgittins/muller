@@ -1,7 +1,3 @@
-__author__ = 'Fabian Gittins'
-__date__ = '06/10/2023'
-
-
 def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     """Muller's method for root finding of scalar function.
 

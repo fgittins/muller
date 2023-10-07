@@ -3,10 +3,8 @@
 import unittest
 from math import pi, sin, exp
 
+import context
 from muller import muller
-
-__author__ = 'Fabian Gittins'
-__date__ = '06/10/2023'
 
 
 class Test(unittest.TestCase):
