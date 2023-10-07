@@ -31,12 +31,12 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     if len(x) != 3:
         raise ValueError('x must have three components')
     if tol <= 0:
-        raise ValueError('tol is too small (tol = {} <= 0)'.format(tol))
-    if type(maxiter) != int:
+        raise ValueError(f'tol is too small (tol = {tol} <= 0)')
+    if not isinstance(maxiter, int):
         raise ValueError('maxiter must be integer')
     if maxiter < 1:
         raise ValueError('maxiter must be greater than 0')
-    if type(verbose) != bool:
+    if not isinstance(verbose, bool):
         raise ValueError('verbose must be boolean')
 
     ximinus2, ximinus1, xi = x
@@ -68,8 +68,8 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
 
     if converged and verbose:
-        print('Method converged after {} iterations'.format(i))
+        print(f'Method converged after {i} iterations')
     elif not converged:
-        raise ValueError('Method did not converge within {} iterations'
-                         .format(maxiter))
+        raise ValueError(
+                f'Method did not converge within {maxiter} iterations')
     return xiplus1
