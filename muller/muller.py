@@ -42,6 +42,12 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
     ximinus2, ximinus1, xi = x
     yiminus2, yiminus1, yi = f(ximinus2), f(ximinus1), f(xi)
 
+    if verbose:
+        print('i \t x \t\t\t f(x)')
+        print(f'-2 \t {ximinus2:<17} \t {yiminus2}')
+        print(f'-1 \t {ximinus1:<17} \t {yiminus1}')
+        print(f'0 \t {xi:<17} \t {yi}')
+
     converged = False
 
     for i in range(maxiter):
@@ -60,6 +66,9 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
 
         yiplus1 = f(xiplus1)
 
+        if verbose:
+            print(f'{i + 1} \t {xiplus1:<17} \t {yiplus1}')
+
         if abs(yiplus1) <= tol:
             converged = True
             break
@@ -68,7 +77,7 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
 
     if converged and verbose:
-        print(f'Method converged after {i} iterations')
+        print(f'Method converged after {i + 1} iterations')
     elif not converged:
         raise ValueError(
                 f'Method did not converge within {maxiter} iterations')
