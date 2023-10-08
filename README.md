@@ -1,7 +1,7 @@
 # muller
 Python implementation of Muller's method for root finding.
 
-### Usage
+## Usage
 `muller` has no dependencies.
 
 Here is a quick example to show how it is used. First, import the root finder
@@ -25,7 +25,7 @@ To search for the root, we type
 root = muller(f, xguesses)
 ```
 
-### Testing
+## Testing
 To test, run
 ```
 python -m unittest tests.test
