@@ -9,9 +9,7 @@ Here is a quick example to show how it is used. First, import the root finder
 from muller import muller
 ```
 We will look for a root of
-$$
-f(x) = e^{-x} \sin(x).
-$$
+$$f(x) = e^{-x} \sin(x).$$
 This has zeros at $x = n \pi$ with $n$ an integer.
 
 We will look for the root at $x = 0$. We need three initial guesses for the root and will use $x = -1, 0, 1$. So,
