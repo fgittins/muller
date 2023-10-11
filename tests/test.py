@@ -1,12 +1,12 @@
 """Test suite for `muller` root finder."""
 
-import unittest
+from unittest import TestCase
 from math import pi, sin, exp
 
 from muller import muller
 
 
-class Test(unittest.TestCase):
+class Test(TestCase):
     def test_quadratic(self):
         def f(x):
             return x**2 - 612
@@ -60,7 +60,3 @@ class Test(unittest.TestCase):
         root = muller(f, x)
 
         self.assertAlmostEqual(root, pi, delta=1e-5)
-
-
-if __name__ == '__main__':
-    unittest.main()
