@@ -13,15 +13,15 @@ class Test(TestCase):
 
         x = (10, 20, 30)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, 612**(1/2), delta=1e-5)
+        self.assertAlmostEqual(res.root, 612**(1/2), delta=1e-5)
 
         x = (-10, -20, -30)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, -612**(1/2), delta=1e-5)
+        self.assertAlmostEqual(res.root, -612**(1/2), delta=1e-5)
 
     def test_sine(self):
         def f(x):
@@ -29,15 +29,15 @@ class Test(TestCase):
 
         x = (1, 2, 3)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, pi, delta=1e-5)
+        self.assertAlmostEqual(res.root, pi, delta=1e-5)
 
         x = (2, 4, 6)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, 2*pi, delta=1e-5)
+        self.assertAlmostEqual(res.root, 2*pi, delta=1e-5)
 
     def test_expsine(self):
         def f(x):
@@ -45,18 +45,18 @@ class Test(TestCase):
 
         x = (-2, -3, -4)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, -pi, delta=1e-5)
+        self.assertAlmostEqual(res.root, -pi, delta=1e-5)
 
         x = (-1, 0, 1/2)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, 0, delta=1e-5)
+        self.assertAlmostEqual(res.root, 0, delta=1e-5)
 
         x = (-1, 0, 1)
 
-        root = muller(f, x)
+        res = muller(f, x)
 
-        self.assertAlmostEqual(root, pi, delta=1e-5)
+        self.assertAlmostEqual(res.root, pi, delta=1e-5)
