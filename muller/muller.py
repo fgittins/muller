@@ -1,4 +1,25 @@
-def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
+class Results:
+    """Represents root-finding result.
+    
+    Attributes
+    ----------
+    root : float
+        Estimated root.
+    iterations : int
+        Number of iterations needed to find root.
+    converged : bool
+        True if routine converged.
+    flag : str
+        Description of cause of termination.
+    """
+    def __init__(self, root, iterations, converged, flag):
+        self.root = root
+        self.iterations = iterations
+        self.converged = converged
+        self.flag = flag
+
+
+def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50):
     """Muller's method for root finding of scalar function.
 
     Implementation is based on description of Muller's method in Sec. 9.5.2 of
@@ -10,8 +31,12 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         Function to find root of.
     x : (3,) array_like
         Three initial guesses.
-    tol : float, optional
-        Absolute tolerance for termination.
+    xtol : float, optional
+        Absolute error in `x` between iterations that is acceptable for
+        convergence.
+    ftol : float, optional
+        Minimum absolute value of function `f` that is acceptable for
+        convergence.
     maxiter : int, optional
         Maximum number of iterations.
     verbose : bool, optional
@@ -19,8 +44,8 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
 
     Returns
     -------
-    root : float
-        Root of function
+    res : Results object
+        Contains results of routine.
 
     References
     ----------
@@ -28,27 +53,20 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
         Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK;
         http://numerical.recipes/book.html).
     """
-    if len(x) != 3:
-        raise ValueError('x must have three components')
-    if tol <= 0:
-        raise ValueError(f'tol is too small (tol = {tol} <= 0)')
+    if xtol <= 0:
+        raise ValueError(f'xtol is too small (xtol = {xtol} <= 0)')
+    if ftol <= 0:
+        raise ValueError(f'ftol is too small (ftol = {ftol} <= 0)')
     if not isinstance(maxiter, int):
         raise ValueError('maxiter must be integer')
     if maxiter < 1:
         raise ValueError('maxiter must be greater than 0')
-    if not isinstance(verbose, bool):
-        raise ValueError('verbose must be boolean')
 
     ximinus2, ximinus1, xi = x
     yiminus2, yiminus1, yi = f(ximinus2), f(ximinus1), f(xi)
 
-    if verbose:
-        print('i \t x \t\t\t f(x)')
-        print(f'-2 \t {ximinus2:<17} \t {yiminus2}')
-        print(f'-1 \t {ximinus1:<17} \t {yiminus1}')
-        print(f'0 \t {xi:<17} \t {yi}')
-
     converged = False
+    flag = 'Routine did not converge'
 
     for i in range(maxiter):
         q = (xi - ximinus1)/(ximinus1 - ximinus2)
@@ -66,19 +84,18 @@ def muller(f, x, tol=1e-5, maxiter=50, verbose=False):
 
         yiplus1 = f(xiplus1)
 
-        if verbose:
-            print(f'{i + 1} \t {xiplus1:<17} \t {yiplus1}')
-
-        if abs(yiplus1) <= tol:
+        if ftol >= abs(yiplus1):
+            flag = ('Routine has reached desired tolerance '
+                    f'in function value ({abs(yiplus1)} <= {ftol})')
+            converged = True
+            break
+        if xtol >= abs(xiplus1 - xi):
+            flag = ('Routine has reached desired tolerance '
+                    f'in root value ({abs(xiplus1 - xi)} <= {xtol})')
             converged = True
             break
 
         ximinus2, ximinus1, xi = ximinus1, xi, xiplus1
         yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
 
-    if converged and verbose:
-        print(f'Method converged after {i + 1} iterations')
-    elif not converged:
-        raise ValueError(
-                f'Method did not converge within {maxiter} iterations')
-    return xiplus1
+    return Results(xiplus1, i + 1, converged, flag)
