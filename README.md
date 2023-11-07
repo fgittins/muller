@@ -22,8 +22,9 @@ xguesses = (-1, 0, 1)
 ```
 To search for the root, we type
 ```
-root = muller(f, xguesses)
+res = muller(f, xguesses)
 ```
+We may examine the `res` object. The most useful attribute is `res.root`, which contains the estimate of the root.
 
 ## Testing
 To test, run
