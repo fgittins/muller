@@ -58,7 +58,7 @@ pip install git+https://github.com/fgittins/muller.git
 To test, run
 
 ```
-python -m unittest tests.test
+python -m unittest tests.test_muller
 ```
 
 in the root directory. I like to use `pytest`, where you can simply enter
