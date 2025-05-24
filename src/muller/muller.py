@@ -10,7 +10,7 @@ class Results:
 
     Attributes
     ----------
-    root : scalar
+    root : Scalar
         Estimated root.
     iterations : int
         complex of iterations needed to find root.
