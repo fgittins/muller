@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Sequence, Tuple, Union
 
-Scalar = float | complex
+Scalar = Union[float, complex]
 
 
 @dataclass
@@ -32,7 +32,7 @@ def muller(
     xtol: float = 1e-5,
     ftol: float = 1e-5,
     maxiter: int = 50,
-    args: None | tuple[Any, ...] = None,
+    args: Union[None, Tuple[Any, ...]] = None,
 ) -> Results:
     """Muller's method for root finding of scalar function.
 
@@ -67,10 +67,10 @@ def muller(
         Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK;
         http://numerical.recipes/book.html).
     """
-    if xtol <= 0:
-        raise ValueError(f"xtol is too small (xtol = {xtol} <= 0)")
-    if ftol <= 0:
-        raise ValueError(f"ftol is too small (ftol = {ftol} <= 0)")
+    if xtol < 0:
+        raise ValueError(f"xtol is negative (xtol = {xtol} < 0)")
+    if ftol < 0:
+        raise ValueError(f"ftol is negative (ftol = {ftol} < 0)")
     if maxiter < 1:
         raise ValueError("maxiter must be greater than 0")
 
