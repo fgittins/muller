@@ -1,26 +1,39 @@
+from dataclasses import dataclass
+from typing import Any, Callable, Sequence
+
+Scalar = float | complex
+
+
+@dataclass
 class Results:
     """Represents root-finding result.
 
     Attributes
     ----------
-    root : float
+    root : scalar
         Estimated root.
     iterations : int
-        Number of iterations needed to find root.
+        complex of iterations needed to find root.
     converged : bool
         True if routine converged.
     flag : str
         Description of cause of termination.
     """
 
-    def __init__(self, root, iterations, converged, flag):
-        self.root = root
-        self.iterations = iterations
-        self.converged = converged
-        self.flag = flag
+    root: Scalar
+    iterations: int
+    converged: bool
+    flag: str
 
 
-def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
+def muller(
+    f: Callable[..., Scalar],
+    x: Sequence[Scalar],
+    xtol: float = 1e-5,
+    ftol: float = 1e-5,
+    maxiter: int = 50,
+    args: None | tuple[Any, ...] = None,
+) -> Results:
     """Muller's method for root finding of scalar function.
 
     Implementation is based on description of Muller's method in Sec. 9.5.2 of
@@ -28,9 +41,9 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
 
     Parameters
     ----------
-    f : callable
+    f : Callable
         Function to find root of.
-    x : (3,) array_like
+    x : (3,) Sequence
         Three initial guesses.
     xtol : float, optional
         Absolute error in `x` between iterations that is acceptable for
@@ -39,15 +52,13 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
         Minimum absolute value of function `f` that is acceptable for
         convergence.
     maxiter : int, optional
-        Maximum number of iterations.
-    verbose : bool, optional
-        Prints final number of iterations.
+        Maximum complex of iterations.
     args : tuple, optional
         Additional arguments to pass to `f`.
 
     Returns
     -------
-    res : Results object
+    res : Results
         Contains results of routine.
 
     References
@@ -60,20 +71,16 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
         raise ValueError(f"xtol is too small (xtol = {xtol} <= 0)")
     if ftol <= 0:
         raise ValueError(f"ftol is too small (ftol = {ftol} <= 0)")
-    if not isinstance(maxiter, int):
-        raise ValueError("maxiter must be integer")
     if maxiter < 1:
         raise ValueError("maxiter must be greater than 0")
-    if args is not None and not isinstance(args, tuple):
-        raise TypeError("args must be a tuple")
 
     if args is not None:
 
-        def call_f(x):
+        def call_f(x: Scalar) -> Scalar:
             return f(x, *args)
     else:
 
-        def call_f(x):
+        def call_f(x: Scalar) -> Scalar:
             return f(x)
 
     ximinus2, ximinus1, xi = x
@@ -82,14 +89,16 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
     converged = False
     flag = "Routine did not converge"
 
-    for i in range(maxiter):
-        q = (xi - ximinus1) / (ximinus1 - ximinus2)
+    xiplus1 = ximinus2
+    i = 0
+    while i < maxiter:
+        q: Scalar = (xi - ximinus1) / (ximinus1 - ximinus2)
         A = q * yi - q * (1 + q) * yiminus1 + q**2 * yiminus2
         B = (2 * q + 1) * yi - (1 + q) ** 2 * yiminus1 + q**2 * yiminus2
         C = (1 + q) * yi
 
-        denomplus = B + (B**2 - 4 * A * C) ** (1 / 2)
-        denomminus = B - (B**2 - 4 * A * C) ** (1 / 2)
+        denomplus: Scalar = B + (B**2 - 4 * A * C) ** (1 / 2)
+        denomminus: Scalar = B - (B**2 - 4 * A * C) ** (1 / 2)
 
         if abs(denomplus) >= abs(denomminus):
             xiplus1 = xi - (xi - ximinus1) * 2 * C / denomplus
@@ -99,21 +108,17 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
         yiplus1 = call_f(xiplus1)
 
         if ftol >= abs(yiplus1):
-            flag = (
-                "Routine has reached desired tolerance "
-                f"in function value ({abs(yiplus1)} <= {ftol})"
-            )
+            flag = f"Routine has reached desired tolerance in function value ({abs(yiplus1)} <= {ftol})"
             converged = True
             break
         if xtol >= abs(xiplus1 - xi):
-            flag = (
-                "Routine has reached desired tolerance "
-                f"in root value ({abs(xiplus1 - xi)} <= {xtol})"
-            )
+            flag = f"Routine has reached desired tolerance in root value ({abs(xiplus1 - xi)} <= {xtol})"
             converged = True
             break
 
         ximinus2, ximinus1, xi = ximinus1, xi, xiplus1
         yiminus2, yiminus1, yi = yiminus1, yi, yiplus1
+
+        i += 1
 
     return Results(xiplus1, i + 1, converged, flag)
