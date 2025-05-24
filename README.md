@@ -39,7 +39,7 @@ You can install `muller` in one of the following ways:
 
 Clone the repository and install using `pip`:
 
-```bash
+```
 git clone https://github.com/fgittins/muller.git
 cd muller
 pip install .
@@ -49,7 +49,7 @@ pip install .
 
 Or you can install directly from GitHub:
 
-```bash
+```
 pip install git+https://github.com/fgittins/muller.git
 ```
 
@@ -57,12 +57,12 @@ pip install git+https://github.com/fgittins/muller.git
 
 To test, run
 
-```bash
+```
 python -m unittest tests.test
 ```
 
 in the root directory. I like to use `pytest`, where you can simply enter
 
-```bash
+```
 pytest
 ```
