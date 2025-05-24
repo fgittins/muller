@@ -20,7 +20,7 @@ class Results:
         self.flag = flag
 
 
-def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50):
+def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50, args=None):
     """Muller's method for root finding of scalar function.
 
     Implementation is based on description of Muller's method in Sec. 9.5.2 of
@@ -42,6 +42,8 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50):
         Maximum number of iterations.
     verbose : bool, optional
         Prints final number of iterations.
+    args : tuple, optional
+        Additional arguments to pass to `f`.
 
     Returns
     -------
@@ -62,9 +64,20 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50):
         raise ValueError("maxiter must be integer")
     if maxiter < 1:
         raise ValueError("maxiter must be greater than 0")
+    if args is not None and not isinstance(args, tuple):
+        raise TypeError("args must be a tuple")
+
+    if args is not None:
+
+        def call_f(x):
+            return f(x, *args)
+    else:
+
+        def call_f(x):
+            return f(x)
 
     ximinus2, ximinus1, xi = x
-    yiminus2, yiminus1, yi = f(ximinus2), f(ximinus1), f(xi)
+    yiminus2, yiminus1, yi = call_f(ximinus2), call_f(ximinus1), call_f(xi)
 
     converged = False
     flag = "Routine did not converge"
@@ -83,7 +96,7 @@ def muller(f, x, xtol=1e-5, ftol=1e-5, maxiter=50):
         else:
             xiplus1 = xi - (xi - ximinus1) * 2 * C / denomminus
 
-        yiplus1 = f(xiplus1)
+        yiplus1 = call_f(xiplus1)
 
         if ftol >= abs(yiplus1):
             flag = (

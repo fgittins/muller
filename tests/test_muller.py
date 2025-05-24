@@ -6,11 +6,16 @@ from unittest import TestCase
 from muller import muller
 
 
+def f(x, p=612):
+    return x**2 - p
+
+
+def g(x):
+    return exp(-x) * sin(x)
+
+
 class TestMuller(TestCase):
     def test_quadratic(self):
-        def f(x):
-            return x**2 - 612
-
         x = (10, 20, 30)
 
         res = muller(f, x)
@@ -23,40 +28,48 @@ class TestMuller(TestCase):
 
         self.assertAlmostEqual(res.root, -(612 ** (1 / 2)), delta=1e-5)
 
-    def test_sine(self):
-        def f(x):
-            return sin(x)
-
+    def test_sin(self):
         x = (1, 2, 3)
 
-        res = muller(f, x)
+        res = muller(sin, x)
 
         self.assertAlmostEqual(res.root, pi, delta=1e-5)
 
         x = (2, 4, 6)
 
-        res = muller(f, x)
+        res = muller(sin, x)
 
         self.assertAlmostEqual(res.root, 2 * pi, delta=1e-5)
 
-    def test_expsine(self):
-        def f(x):
-            return exp(-x) * sin(x)
-
+    def test_expsin(self):
         x = (-2, -3, -4)
 
-        res = muller(f, x)
+        res = muller(g, x)
 
         self.assertAlmostEqual(res.root, -pi, delta=1e-5)
 
         x = (-1, 0, 1 / 2)
 
-        res = muller(f, x)
+        res = muller(g, x)
 
         self.assertAlmostEqual(res.root, 0, delta=1e-5)
 
         x = (-1, 0, 1)
 
-        res = muller(f, x)
+        res = muller(g, x)
 
         self.assertAlmostEqual(res.root, pi, delta=1e-5)
+
+    def test_args(self):
+        x = (10, 20, 30)
+        p = 612
+
+        res = muller(f, x, args=(p,))
+
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)
+
+        x = (-10, -20, -30)
+
+        res = muller(f, x, args=(p,))
+
+        self.assertAlmostEqual(res.root, -(612 ** (1 / 2)), delta=1e-5)
