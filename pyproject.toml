@@ -1,0 +1,30 @@
+[project]
+name = "muller"
+version = "0.1.0"
+description = "A Python implementation of Muller's method"
+readme = "README.md"
+authors = [{ name = "Fabian Gittins", email = "f.w.r.gittins@uu.nl" }]
+requires-python = ">=3.8"
+dependencies = []
+license = {file = "LICENSE.md"}
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.11.11",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/muller"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+extend-select = [
+    "I",
+]

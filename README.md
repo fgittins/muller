@@ -1,34 +1,68 @@
 # muller
-Python implementation of Muller's method for root finding.
+
+A Python implementation of Muller's method.
+
+---
 
 ## Usage
-`muller` has no dependencies.
 
-Here is a quick example to show how it is used. First, import the root finder
-```
+This library requires no dependencies beyond the Python standard library.
+
+Here is a quick example to show how it is used:
+
+```python
 from muller import muller
-```
-We will look for a root of
-$$f(x) = e^{-x} \sin(x).$$
-This has zeros at $x = n \pi$ with $n$ an integer.
-
-We will look for the root at $x = 0$. We need three initial guesses for the root and will use $x = -1, 0, 1$. So,
-```
 from math import exp, sin
 
-def f(x): return exp(-x)*sin(x)
+def f(x):
+    return exp(-x) * sin(x)
 
 xguesses = (-1, 0, 1)
-```
-To search for the root, we type
-```
 res = muller(f, xguesses)
+
+print(res.root)
 ```
-We may examine the `res` object. The most useful attribute is `res.root`, which contains the estimate of the root.
+
+This finds a root of the function
+
+$$
+f(x) = e^{-x} \sin(x),
+$$
+
+which has roots at $x = n \pi$ for integer $n$. The result object has a `.root` attribute storing the estimated solution.
+
+## Installation
+
+You can install `muller` in one of the following ways:
+
+### From source (locally)
+
+Clone the repository and install using `pip`:
+
+```bash
+git clone https://github.com/fgittins/muller.git
+cd muller
+pip install .
+```
+
+### Directly from GitHub
+
+Or you can install directly from GitHub:
+
+```bash
+pip install git+https://github.com/fgittins/muller.git
+```
 
 ## Testing
+
 To test, run
-```
+
+```bash
 python -m unittest tests.test
 ```
-in the root directory.
+
+in the root directory. I like to use `pytest`, where you can simply enter
+
+```bash
+pytest
+```
