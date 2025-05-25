@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Sequence, Tuple, Union
+from typing import Any, Callable, Tuple, Union
 
 Scalar = Union[float, complex]
 
@@ -28,7 +28,7 @@ class Results:
 
 def muller(
     f: Callable[..., Scalar],
-    x: Sequence[Scalar],
+    x: Tuple[Scalar, Scalar, Scalar],
     xtol: float = 1e-5,
     ftol: float = 1e-5,
     maxiter: int = 50,
@@ -43,7 +43,7 @@ def muller(
     ----------
     f : Callable
         Function to find root of.
-    x : (3,) Sequence
+    x : (3,) Tuple
         Three initial guesses.
     xtol : float, optional
         Absolute error in `x` between iterations that is acceptable for
