@@ -23,6 +23,9 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/muller"]
 
+[tool.pyright]
+typeCheckingMode = "strict"
+
 [tool.ruff]
 line-length = 79
 
