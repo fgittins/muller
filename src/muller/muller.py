@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Tuple, Union
 
-Scalar = Union[float, complex]
-
 
 @dataclass
 class Results:
@@ -10,7 +8,7 @@ class Results:
 
     Attributes
     ----------
-    root : Scalar
+    root : complex
         Estimated root.
     iterations : int
         complex of iterations needed to find root.
@@ -20,15 +18,15 @@ class Results:
         Description of cause of termination.
     """
 
-    root: Scalar
+    root: complex
     iterations: int
     converged: bool
     flag: str
 
 
 def muller(
-    f: Callable[..., Scalar],
-    x: Tuple[Scalar, Scalar, Scalar],
+    f: Callable[..., complex],
+    x: Tuple[complex, complex, complex],
     xtol: float = 1e-5,
     ftol: float = 1e-5,
     maxiter: int = 50,
@@ -76,11 +74,11 @@ def muller(
 
     if args is not None:
 
-        def call_f(x: Scalar) -> Scalar:
+        def call_f(x: complex) -> complex:
             return f(x, *args)
     else:
 
-        def call_f(x: Scalar) -> Scalar:
+        def call_f(x: complex) -> complex:
             return f(x)
 
     ximinus2, ximinus1, xi = x
@@ -92,13 +90,13 @@ def muller(
     xiplus1 = ximinus2
     i = 0
     while i < maxiter:
-        q: Scalar = (xi - ximinus1) / (ximinus1 - ximinus2)
+        q: complex = (xi - ximinus1) / (ximinus1 - ximinus2)
         A = q * yi - q * (1 + q) * yiminus1 + q**2 * yiminus2
         B = (2 * q + 1) * yi - (1 + q) ** 2 * yiminus1 + q**2 * yiminus2
         C = (1 + q) * yi
 
-        denomplus: Scalar = B + (B**2 - 4 * A * C) ** (1 / 2)
-        denomminus: Scalar = B - (B**2 - 4 * A * C) ** (1 / 2)
+        denomplus = B + (B**2 - 4 * A * C) ** (1 / 2)
+        denomminus = B - (B**2 - 4 * A * C) ** (1 / 2)
 
         if abs(denomplus) >= abs(denomminus):
             xiplus1 = xi - (xi - ximinus1) * 2 * C / denomplus

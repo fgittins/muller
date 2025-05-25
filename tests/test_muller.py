@@ -1,15 +1,12 @@
 """Test suite for `muller` root finder."""
 
 from math import exp, pi, sin
-from typing import Union
 from unittest import TestCase
 
 from muller import muller
 
-Scalar = Union[float, complex]
 
-
-def f(x: Scalar, n: int = 2, p: int = 612) -> Scalar:
+def f(x: complex, n: int = 2, p: int = 612) -> complex:
     return x**n - p
 
 
