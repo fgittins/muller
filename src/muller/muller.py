@@ -90,7 +90,7 @@ def muller(
     xiplus1 = ximinus2
     i = 0
     while i < maxiter:
-        q: complex = (xi - ximinus1) / (ximinus1 - ximinus2)
+        q = (xi - ximinus1) / (ximinus1 - ximinus2)
         A = q * yi - q * (1 + q) * yiminus1 + q**2 * yiminus2
         B = (2 * q + 1) * yi - (1 + q) ** 2 * yiminus1 + q**2 * yiminus2
         C = (1 + q) * yi
