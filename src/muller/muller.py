@@ -11,7 +11,7 @@ class Results:
     root : complex
         Estimated root.
     iterations : int
-        complex of iterations needed to find root.
+        Number of iterations needed to find root.
     converged : bool
         True if routine converged.
     flag : str
