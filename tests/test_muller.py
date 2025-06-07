@@ -84,6 +84,11 @@ class TestMuller(TestCase):
         self.assertIn("root", res.flag)
 
     def test_errors(self) -> None:
+        x = (10, 20)
+
+        with self.assertRaises(ValueError):
+            muller(f, x)
+
         x = (10, 20, 30)
 
         with self.assertRaises(ValueError):
@@ -94,3 +99,26 @@ class TestMuller(TestCase):
 
         with self.assertRaises(ValueError):
             muller(f, x, maxiter=0)
+
+    def test_iterable(self) -> None:
+        n, p = 2, 612
+
+        x = [10, 20, 30]
+        res = muller(f, x, args=(n, p))
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)
+
+        x = {10, 20, 30}
+        res = muller(f, x, args=(n, p))
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)
+
+        x = range(10, 31, 10)
+        res = muller(f, x, args=(n, p))
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)
+
+        x = (10, 20, 30)
+        res = muller(f, x, args=[n, p])
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)
+
+        x = (10, 20, 30)
+        res = muller(f, x, args={n, p})
+        self.assertAlmostEqual(res.root, 612 ** (1 / 2), delta=1e-5)

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Tuple, Union
+from typing import Any, Callable, Iterable, Optional
 
 
 @dataclass
@@ -26,11 +26,11 @@ class Results:
 
 def muller(
     f: Callable[..., complex],
-    x: Tuple[complex, complex, complex],
+    x: Iterable[complex],
     xtol: float = 1e-5,
     ftol: float = 1e-5,
     maxiter: int = 50,
-    args: Union[None, Tuple[Any, ...]] = None,
+    args: Optional[Iterable[Any]] = None,
 ) -> Results:
     """Muller's method for root finding of scalar function.
 
@@ -41,7 +41,7 @@ def muller(
     ----------
     f : Callable
         Function to find root of.
-    x : (3,) Tuple
+    x : (3,) Iterable
         Three initial guesses.
     xtol : float, optional
         Absolute error in `x` between iterations that is acceptable for
@@ -50,8 +50,8 @@ def muller(
         Minimum absolute value of function `f` that is acceptable for
         convergence.
     maxiter : int, optional
-        Maximum complex of iterations.
-    args : tuple, optional
+        Maximum number of iterations.
+    args : Iterable, optional
         Additional arguments to pass to `f`.
 
     Returns
@@ -65,6 +65,9 @@ def muller(
         Computing, 3rd Edition" (Cambridge University Press, Cambridge, UK;
         http://numerical.recipes/book.html).
     """
+    x = tuple(x)
+    if len(x) != 3:
+        raise ValueError("x must contain exactly three numbers")
     if xtol < 0:
         raise ValueError(f"xtol is negative (xtol = {xtol} < 0)")
     if ftol < 0:
