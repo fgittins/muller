@@ -109,11 +109,11 @@ def muller(
         yiplus1 = call_f(xiplus1)
 
         if ftol >= abs(yiplus1):
-            flag = f"Routine has reached desired tolerance in function value ({abs(yiplus1)} <= {ftol})"
+            flag = f"Routine has reached desired tolerance in absolute function value ({abs(yiplus1)} <= {ftol})"
             converged = True
             break
         if xtol >= abs(xiplus1 - xi):
-            flag = f"Routine has reached desired tolerance in root value ({abs(xiplus1 - xi)} <= {xtol})"
+            flag = f"Routine has reached desired tolerance in absolute root value ({abs(xiplus1 - xi)} <= {xtol})"
             converged = True
             break
 
